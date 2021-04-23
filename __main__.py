@@ -22,6 +22,6 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("source_sm", type=str)
     ap.add_argument("--output-fname", type=str)
-    ap.add_argument("--press-duration", type=int, default=50, help="Duration for press in ms")
+    ap.add_argument("--press-duration", type=int, default=lib.PRESS_DURATION, help="Duration for press in ms")
     args = ap.parse_args()
     main(args)
