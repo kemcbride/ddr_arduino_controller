@@ -238,5 +238,35 @@ class TestBarLogic(unittest.TestCase):
         self.assertEqual(fourbetween_beat_delay, 2 * eightbetween_beat_delay)
 
 
+class TestMultiBarLogic(unittest.TestCase):
+    def setUp(self):
+        self.press_duration = 10
+        self.bpm = 180.0
+        self.bar_duration = lib.get_bar_duration(self.bpm)
+
+    def produce_press_absolute_timeline(self, bar_lines):
+        time = 0
+        press_times = []
+        for line in bar_lines:
+            if isinstance(line, lib.Press):
+                press_times.append(time)
+            time += line.duration
+        return press_times
+
+    def test_two_bar_simple(self):
+        string = (
+            "0010\n0000\n0100\n0000\n,"
+            "\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n"
+        )
+        lines = lib.write_out_chart(string, self.bpm, self.press_duration)
+        timeline = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(lines), 4 + 10)
+        self.assertEqual(len(timeline), 2 + 5)
+        self.assertEqual(
+            round(sum([line.duration for line in lines]), 2),
+            round(2 * self.bar_duration, 2),
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
