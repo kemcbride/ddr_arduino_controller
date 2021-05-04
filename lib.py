@@ -90,16 +90,16 @@ def get_bpm(sm):
 
 
 def get_between_beat_delay(bpm, num_rows):
-    bps = bpm / 60
-    spb = 1 / bps
-    mspb = spb * 1000
-    between_beat_delay = mspb / num_rows * 4
-    return between_beat_delay
+    bar_duration = get_bar_duration(bpm)
+    return bar_duration / num_rows
 
 
 def get_bar_duration(bpm):
-    num_rows = 4
-    return num_rows * get_between_beat_delay(bpm, num_rows)
+    bps = bpm / 60.0
+    spb = 1 / bps
+    mspb = spb * 1000
+    bar_duration = mspb * 4
+    return bar_duration
 
 
 def write_header(sm, distinct_num_rows, press_duration):
@@ -177,10 +177,10 @@ def write_out_bar_code(bar, press_duration, bpm, last_delay=0.0):
     bar_lines = []
     line_lines = []
     if "1" not in bar.notes:
-        # Is thsi right??? IDK lol, its not like there are any empty bars.
+        # Is thsi right??? IDK lol, its not like there are any empty bars...?
         return [Delay(full_bar_duration)], 0.0
 
-    for idx, line in enumerate(bar.notes.split()):
+    for line in bar.notes.split():
         if "1" in line:
             line_lines, first_note_written, next_delay = write_line(
                 line,
@@ -198,12 +198,8 @@ def write_out_bar_code(bar, press_duration, bpm, last_delay=0.0):
 
     consumed_duration += sum(line.duration for line in bar_lines)
     remainder_delay = full_bar_duration - consumed_duration
-    # import ipdb;
-    # if remainder_delay < 0:
-    #     ipdb.set_trace()
     bar_end_remainder_delay = write_out_delay(remainder_delay)
     bar_lines.append(bar_end_remainder_delay)
-
     return bar_lines, 0.0
 
 

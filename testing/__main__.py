@@ -6,8 +6,6 @@ import lib
 
 
 class TestFullSmWrites(unittest.TestCase):
-    def setUp(self):
-        pass
 
     def check_total_duration(self, lines, num_bars, bpm, addl_delay=0):
         line_duration_sum = sum(line.duration for line in lines)
@@ -97,6 +95,19 @@ class TestBarLogic(unittest.TestCase):
         self.bpm = 120.0
         self.bar_duration = lib.get_bar_duration(self.bpm)
 
+    def produce_press_absolute_timeline(self, bar_lines):
+        time = 0
+        press_times = []
+        for line in bar_lines:
+            if isinstance(line, lib.Press):
+                press_times.append(time)
+            time += line.duration
+        return press_times
+
+    def test_bar_duration(self):
+        expected_duration = 2000
+        self.assertEqual(self.bar_duration, expected_duration)
+
     def test_empty_bar(self):
         bar = lib.produce_bar("0000\n0000\n0000\n0000\n")
         bar_duration = lib.get_bar_duration(self.bpm)
@@ -107,6 +118,9 @@ class TestBarLogic(unittest.TestCase):
         self.assertEqual(line_duration_sum, bar_duration)
         for line in lines:
             self.assertGreater(line.duration, 0)
+
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 0)
 
     def test_singlenote_bar(self):
         bar = lib.produce_bar("0000\n0000\n0000\n1000\n")
@@ -120,6 +134,10 @@ class TestBarLogic(unittest.TestCase):
         for line in lines:
             self.assertGreater(line.duration, 0)
 
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 1)
+        self.assertEqual(press_times[0], 1500)
+
     def test_multinote_bar(self):
         bar = lib.produce_bar("0010\n0100\n0001\n1000\n")
         bar_duration = lib.get_bar_duration(self.bpm)
@@ -131,6 +149,11 @@ class TestBarLogic(unittest.TestCase):
         self.assertEqual(line_duration_sum, bar_duration)
         for line in lines:
             self.assertGreater(line.duration, 0)
+
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 4)
+        for idx, time in enumerate(press_times):
+            self.assertEqual(time, 500 * idx)
 
     def test_firstnoteonly_bar(self):
         bar = lib.produce_bar("0010\n0000\n0000\n0000\n")
@@ -144,6 +167,10 @@ class TestBarLogic(unittest.TestCase):
         for line in lines:
             self.assertGreater(line.duration, 0)
 
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 1)
+        self.assertEqual(press_times[0], 0)
+
     def test_firstnotealternatingnotes_bar(self):
         bar = lib.produce_bar("0010\n0000\n0100\n0000\n")
         bar_duration = lib.get_bar_duration(self.bpm)
@@ -156,6 +183,11 @@ class TestBarLogic(unittest.TestCase):
         for line in lines:
             self.assertGreater(line.duration, 0)
 
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 2)
+        self.assertEqual(press_times[0], 0)
+        self.assertEqual(press_times[1], 1000)
+
     def test_secondnotealternatingnotes_bar(self):
         bar = lib.produce_bar("0000\n0100\n0000\n0001\n")
         bar_duration = lib.get_bar_duration(self.bpm)
@@ -167,6 +199,11 @@ class TestBarLogic(unittest.TestCase):
         self.assertEqual(line_duration_sum, bar_duration)
         for line in lines:
             self.assertGreater(line.duration, 0)
+
+        press_times = self.produce_press_absolute_timeline(lines)
+        self.assertEqual(len(press_times), 2)
+        self.assertEqual(press_times[0], 500)
+        self.assertEqual(press_times[1], 1500)
 
     def test_problem_negative_postbardelay_8countbar(self):
         string = "\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n"
@@ -181,6 +218,10 @@ class TestBarLogic(unittest.TestCase):
         for line in lines:
             self.assertGreater(line.duration, 0)
 
+        press_times = self.produce_press_absolute_timeline(lines)
+        expected_press_times = [0, 500, 750, 1000, 1500]
+        self.assertEqual(press_times, expected_press_times)
+
     def test_between_beat_durations_make_sense(self):
         lib.get_bar_duration(self.bpm)
 
@@ -194,8 +235,6 @@ class TestBarLogic(unittest.TestCase):
         eightbetween_beat_delay = lib.get_between_beat_delay(
             self.bpm, eightbar.num_rows
         )
-
-        self.assertGreater(fourbetween_beat_delay, eightbetween_beat_delay)
         self.assertEqual(fourbetween_beat_delay, 2 * eightbetween_beat_delay)
 
 
