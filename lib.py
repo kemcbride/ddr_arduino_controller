@@ -1,6 +1,4 @@
 import dataclasses
-import simfile
-import typing
 from enum import Enum
 
 
@@ -20,7 +18,12 @@ class Directions(Enum):
     RIGHT = Direction("Right", 3)
 
 
-DIRS = {0: Directions.LEFT, 1: Directions.DOWN, 2: Directions.UP, 3: Directions.RIGHT}
+DIRS = {
+    0: Directions.LEFT,
+    1: Directions.DOWN,
+    2: Directions.UP,
+    3: Directions.RIGHT
+}
 
 
 @dataclasses.dataclass
@@ -46,14 +49,18 @@ class Press:
     def __init__(self, source_line, duration):
         self._source_line = source_line
         self._num_keys = len([k for k in source_line if k == "1"])
-        self._keys = [DIRS[idx] for idx, val in enumerate(source_line) if val == "1"]
+        self._keys = [
+            DIRS[idx] for idx, val in enumerate(source_line) if val == "1"
+        ]
         self._duration = duration
         self._function_name = (
-            f"press{self.num_keys}_button" if self.num_keys > 1 else "press_button"
+            f"press{self.num_keys}_button" if self.num_keys > 1
+            else "press_button"
         )
         self._button_dirs_str = ", ".join([d.name.title() for d in self.keys])
         self._string = (
-            f"{self._function_name}({self._button_dirs_str}, {self._duration});"
+            f"{self._function_name}({self._button_dirs_str}, "
+            f"{self._duration});"
         )
 
     def __str__(self):
@@ -125,7 +132,12 @@ def write_out_one_beat(line, press_duration=PRESS_DURATION):
 
 
 def write_line(
-    line, first_note_written, last_delay, next_delay, press_delay, press_duration
+    line,
+    first_note_written,
+    last_delay,
+    next_delay,
+    press_delay,
+    press_duration
 ):
     line_lines = []
     if not first_note_written:
@@ -140,7 +152,12 @@ def write_line(
     return line_lines, first_note_written, press_delay
 
 
-def update_delays(first_note_written, last_delay, next_delay, between_beat_delay):
+def update_delays(
+    first_note_written,
+    last_delay,
+    next_delay,
+    between_beat_delay
+):
     if not first_note_written:
         last_delay += between_beat_delay
     else:
@@ -202,7 +219,6 @@ def read_notes(notes: str):
 
 def write_out_chart(notes, bpm, press_duration):
     bars = read_notes(notes)
-    distinct_num_rows = {bar.num_rows for bar in bars}
     leftover_delay = 0.0
     output_lines = []
     for bar in bars:

@@ -1,4 +1,4 @@
-# ummm testing for script generator for ... ddr arduino project...
+# testing for script for ddr arduino project
 import unittest
 
 import simfile
@@ -11,7 +11,8 @@ class TestFullSmWrites(unittest.TestCase):
 
     def check_total_duration(self, lines, num_bars, bpm, addl_delay=0):
         line_duration_sum = sum(line.duration for line in lines)
-        expected_duration_sum = num_bars * lib.get_bar_duration(bpm) + addl_delay
+        bar_duration = lib.get_bar_duration(bpm)
+        expected_duration_sum = num_bars * bar_duration + addl_delay
         self.assertEqual(line_duration_sum, expected_duration_sum)
 
     def test_empty_song(self):
@@ -34,7 +35,6 @@ class TestFullSmWrites(unittest.TestCase):
         self.assertEqual(len(bars), 8)
 
         leftover_delay = 0.0
-        output_lines = []
         for bar in bars:
             bar_lines, leftover_delay = lib.write_out_bar_code(
                 bar, press_duration, bpm, leftover_delay
@@ -57,7 +57,6 @@ class TestFullSmWrites(unittest.TestCase):
         self.assertEqual(len(bars), 8)
 
         leftover_delay = 0.0
-        output_lines = []
         for bar in bars:
             bar_lines, leftover_delay = lib.write_out_bar_code(
                 bar, press_duration, bpm, leftover_delay
@@ -79,14 +78,17 @@ class TestFullSmWrites(unittest.TestCase):
         bar_duration = lib.get_bar_duration(bpm)
         for bar in bars:
             bar_lines, _ = lib.write_out_bar_code(bar, press_duration, bpm)
-            self.assertEqual(sum(line.duration for line in bar_lines), bar_duration)
-            num_presses = len([p for p in bar_lines if isinstance(p, lib.Press)])
+            bar_line_duration = sum(line.duration for line in bar_lines)
+            self.assertEqual(bar_line_duration, bar_duration)
+            num_presses = len([
+                p for p in bar_lines if isinstance(p, lib.Press)
+            ])
             if isinstance(bar_lines[0], lib.Press):
                 self.assertEqual(len(bar_lines), num_presses * 2)
             else:
                 self.assertEqual(len(bar_lines), 1 + num_presses * 2)
 
-        lines = lib.write_out_chart(chart.notes, bpm, press_duration)
+        lib.write_out_chart(chart.notes, bpm, press_duration)
 
 
 class TestBarLogic(unittest.TestCase):
@@ -167,7 +169,8 @@ class TestBarLogic(unittest.TestCase):
             self.assertGreater(line.duration, 0)
 
     def test_problem_negative_postbardelay_8countbar(self):
-        bar = lib.produce_bar("\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n")
+        string = "\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n"
+        bar = lib.produce_bar(string)
         bar_duration = lib.get_bar_duration(self.bpm)
 
         lines, _ = lib.write_out_bar_code(bar, self.press_duration, self.bpm)
@@ -179,12 +182,15 @@ class TestBarLogic(unittest.TestCase):
             self.assertGreater(line.duration, 0)
 
     def test_between_beat_durations_make_sense(self):
-        bar_duration = lib.get_bar_duration(self.bpm)
+        lib.get_bar_duration(self.bpm)
 
         fourbar = lib.produce_bar("0010\n0000\n0100\n0000\n")
-        fourbetween_beat_delay = lib.get_between_beat_delay(self.bpm, fourbar.num_rows)
+        fourbetween_beat_delay = lib.get_between_beat_delay(
+            self.bpm, fourbar.num_rows
+        )
 
-        eightbar = lib.produce_bar("\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n")
+        string = "\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n"
+        eightbar = lib.produce_bar(string)
         eightbetween_beat_delay = lib.get_between_beat_delay(
             self.bpm, eightbar.num_rows
         )
