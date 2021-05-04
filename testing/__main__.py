@@ -15,8 +15,8 @@ class TestFullSmWrites(unittest.TestCase):
         self.assertEqual(line_duration_sum, expected_duration_sum)
 
     def test_empty_song(self):
-        with open("testing/test1.sm", 'r') as f:
-            sm = simfile.load(f);
+        with open("testing/test1.sm", "r") as f:
+            sm = simfile.load(f)
         chart = sm.charts[0]
         press_duration = 10
         bpm = lib.get_bpm(sm)
@@ -24,8 +24,8 @@ class TestFullSmWrites(unittest.TestCase):
         self.assertEqual(len(lines), 8)
 
     def test_single_note_song(self):
-        with open("testing/test2.sm", 'r') as f:
-            sm = simfile.load(f);
+        with open("testing/test2.sm", "r") as f:
+            sm = simfile.load(f)
         chart = sm.charts[0]
         press_duration = 10
         bpm = lib.get_bpm(sm)
@@ -36,7 +36,9 @@ class TestFullSmWrites(unittest.TestCase):
         leftover_delay = 0.0
         output_lines = []
         for bar in bars:
-            bar_lines, leftover_delay = lib.write_out_bar_code(bar, press_duration, bpm, leftover_delay)
+            bar_lines, leftover_delay = lib.write_out_bar_code(
+                bar, press_duration, bpm, leftover_delay
+            )
             self.assertLess(len(bar_lines), 4)
 
         lines = lib.write_out_chart(chart.notes, bpm, press_duration)
@@ -45,8 +47,8 @@ class TestFullSmWrites(unittest.TestCase):
         self.check_total_duration(lines, 8, bpm)
 
     def test_simple_multi_note_song(self):
-        with open("testing/test3.sm", 'r') as f:
-            sm = simfile.load(f);
+        with open("testing/test3.sm", "r") as f:
+            sm = simfile.load(f)
         chart = sm.charts[0]
         press_duration = 10
         bpm = lib.get_bpm(sm)
@@ -57,7 +59,9 @@ class TestFullSmWrites(unittest.TestCase):
         leftover_delay = 0.0
         output_lines = []
         for bar in bars:
-            bar_lines, leftover_delay = lib.write_out_bar_code(bar, press_duration, bpm, leftover_delay)
+            bar_lines, leftover_delay = lib.write_out_bar_code(
+                bar, press_duration, bpm, leftover_delay
+            )
             self.assertLess(len(bar_lines), 10)
 
         lines = lib.write_out_chart(chart.notes, bpm, press_duration)
@@ -66,8 +70,8 @@ class TestFullSmWrites(unittest.TestCase):
         self.check_total_duration(lines, 8, bpm)
 
     def test_hysteria_maniac_single(self):
-        with open("testing/hysteria.sm", 'r') as f:
-            sm = simfile.load(f);
+        with open("testing/hysteria.sm", "r") as f:
+            sm = simfile.load(f)
         chart = sm.charts[2]
         press_duration = 50
         bpm = lib.get_bpm(sm)
@@ -181,11 +185,13 @@ class TestBarLogic(unittest.TestCase):
         fourbetween_beat_delay = lib.get_between_beat_delay(self.bpm, fourbar.num_rows)
 
         eightbar = lib.produce_bar("\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n")
-        eightbetween_beat_delay = lib.get_between_beat_delay(self.bpm, eightbar.num_rows)
+        eightbetween_beat_delay = lib.get_between_beat_delay(
+            self.bpm, eightbar.num_rows
+        )
 
         self.assertGreater(fourbetween_beat_delay, eightbetween_beat_delay)
         self.assertEqual(fourbetween_beat_delay, 2 * eightbetween_beat_delay)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
