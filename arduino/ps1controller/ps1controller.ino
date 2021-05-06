@@ -22,14 +22,14 @@ void setup()
 
 void loop()
 {
-  // digitalWrite(CircleButton, HIGH);       // De-Activates A button
-  // digitalWrite(XButton, HIGH);       // De-Activates B button
-  // digitalWrite(Select, HIGH);  // De-Activates Select button
-  // digitalWrite(Start, HIGH);   // De-Activates Start button
-  digitalWrite(Left, HIGH);    // De-Activates Left button
-  digitalWrite(Right, HIGH);   // De-Activates Right button 
-  digitalWrite(Up, HIGH);      // De-Activates Up button 
-  digitalWrite(Down, HIGH);    // De-Activates Down button 
+  // digitalWrite(CircleButton, HIGH);
+  // digitalWrite(XButton, HIGH);
+  // digitalWrite(Select, HIGH);
+  // digitalWrite(Start, HIGH);
+  digitalWrite(Left, HIGH);
+  digitalWrite(Right, HIGH);
+  digitalWrite(Up, HIGH);
+  digitalWrite(Down, HIGH);
   digitalWrite(MacroPin, HIGH);      // Sets reference HIGH
 
   int buttonValue = digitalRead(MacroPin);
