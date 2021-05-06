@@ -1,8 +1,6 @@
 backcall==0.2.0
 decorator==5.0.7
 ipdb==0.13.7
-ipython==7.22.0
-ipython-genutils==0.2.0
 jedi==0.18.0
 msdparser==1.0.0a3
 parso==0.8.2
@@ -13,5 +11,5 @@ ptyprocess==0.7.0
 Pygments==2.8.1
 simfile==2.0.0a3
 toml==0.10.2
-traitlets==5.0.5
+traitlets>=4.3.0
 wcwidth==0.2.5

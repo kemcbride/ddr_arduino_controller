@@ -5,7 +5,7 @@ int Left = 51;              // Left button connected to digital pin 4
 int Right = 52;             // Right button connected to digital pin 5
 int Up = 50;                // Up button connected to digital pin 6
 int Down = 53;              // Down button connected to digital pin 7
-int ButtonPin = 10;             // Activation button connected to digital pin 10
+int MacroPin = 10;             // Activation button connected to digital pin 10
 int PressDuration = 50; // ms
 int BetweenPressDelay = 300; // ms
 

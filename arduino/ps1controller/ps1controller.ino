@@ -21,7 +21,7 @@ void setup()
   pinMode(Up, OUTPUT); 
   pinMode(Down, OUTPUT); 
   
-  pinMode(ButtonPin, INPUT_PULLUP);
+  pinMode(MacroPin, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
 
   int kelly = 100 + bpm;
@@ -54,7 +54,7 @@ void loop()
   digitalWrite(MacroPin, HIGH);      // Sets reference HIGH
 
 
-  int buttonValue = digitalRead(ButtonPin);
+  int buttonValue = digitalRead(MacroPin);
   if (buttonValue == LOW) {
     send_button_presses();
   }
