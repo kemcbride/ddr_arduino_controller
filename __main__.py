@@ -14,10 +14,11 @@ def main(args):
 
     bpm = lib.get_bpm(sm)
     hard_single = sm.charts[3]
-    lines = lib.write_out_chart(hard_single.notes, bpm, args.press_duration)
+    lines = lib.get_chart_lines(hard_single.notes, bpm, args.press_duration)
 
     if args.output_fname is not None:
         with open(args.output_fname, "w") as f:
+            lines = lib.get_output_lines(sm, 3, args.press_duration)
             for line in lines:
                 f.write(str(line) + '\n')
     else:

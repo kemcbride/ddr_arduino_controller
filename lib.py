@@ -18,6 +18,7 @@ class Directions(Enum):
     RIGHT = Direction("Right", 3)
 
 
+TAB = " " * 2
 DIRS = {
     0: Directions.LEFT,
     1: Directions.DOWN,
@@ -102,12 +103,14 @@ def get_bar_duration(bpm):
     return bar_duration
 
 
-def write_header(sm, distinct_num_rows, press_duration):
+def write_header(sm, press_duration):
+    bpm = get_bpm(sm)
     return [
         "#ifndef SONG_H",
         "#define SONG_H",
         '#include "helpers.h"',
         f"float press_duration = {press_duration};",
+        f"float bpm = {bpm};",
         "",
         "void play_song() {",
     ]
@@ -126,7 +129,7 @@ def write_out_delay(next_delay):
     return delay
 
 
-def write_out_one_beat(line, press_duration=PRESS_DURATION):
+def write_out_one_beat(line, press_duration):
     press = Press(line, press_duration)
     return press
 
@@ -147,7 +150,7 @@ def write_line(
     else:
         if next_delay > 0:
             line_lines.append(write_out_delay(next_delay))
-    line = write_out_one_beat(line, press_duration=press_duration)
+    line = write_out_one_beat(line, press_duration)
     line_lines.append(line)
     return line_lines, first_note_written, press_delay
 
@@ -207,7 +210,7 @@ def produce_press_absolute_timeline(bar_lines):
     time = 0
     press_times = []
     for line in bar_lines:
-        if isinstance(line, lib.Press):
+        if isinstance(line, Press):
             press_times.append(time)
         time += line.duration
     return press_times
@@ -223,7 +226,7 @@ def read_notes(notes: str):
     return bar_list
 
 
-def write_out_chart(notes, bpm, press_duration):
+def get_chart_lines(notes, bpm, press_duration):
     bars = read_notes(notes)
     leftover_delay = 0.0
     output_lines = []
@@ -233,3 +236,23 @@ def write_out_chart(notes, bpm, press_duration):
         )
         output_lines += bar_lines
     return output_lines
+
+
+def remove_initial_delays(chart_lines):
+    first_press_idx = len(chart_lines)
+    for idx, line in enumerate(chart_lines):
+        if isinstance(line, Press):
+            first_press_idx = idx
+            break
+    return chart_lines[first_press_idx:]
+
+
+def get_output_lines(sm, chart_index, press_duration):
+    header_lines = write_header(sm, press_duration)
+    notes = sm.charts[chart_index].notes
+    note_lines = [
+        TAB + str(line) for line in
+        remove_initial_delays(get_chart_lines(notes, get_bpm(sm), press_duration))
+    ]
+    footer_lines = write_footer()
+    return header_lines + note_lines + footer_lines

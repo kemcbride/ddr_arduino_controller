@@ -19,7 +19,7 @@ class TestFullSmWrites(unittest.TestCase):
         chart = sm.charts[0]
         press_duration = 10
         bpm = lib.get_bpm(sm)
-        lines = lib.write_out_chart(chart.notes, bpm, press_duration)
+        lines = lib.get_chart_lines(chart.notes, bpm, press_duration)
         self.assertEqual(len(lines), 8)
 
     def test_single_note_song(self):
@@ -39,7 +39,7 @@ class TestFullSmWrites(unittest.TestCase):
             )
             self.assertLess(len(bar_lines), 4)
 
-        lines = lib.write_out_chart(chart.notes, bpm, press_duration)
+        lines = lib.get_chart_lines(chart.notes, bpm, press_duration)
         self.assertEqual(len(lines), 9)
 
         self.check_total_duration(lines, 8, bpm)
@@ -61,7 +61,7 @@ class TestFullSmWrites(unittest.TestCase):
             )
             self.assertLess(len(bar_lines), 10)
 
-        lines = lib.write_out_chart(chart.notes, bpm, press_duration)
+        lines = lib.get_chart_lines(chart.notes, bpm, press_duration)
         self.assertEqual(len(lines), 32)
 
         self.check_total_duration(lines, 8, bpm)
@@ -86,7 +86,7 @@ class TestFullSmWrites(unittest.TestCase):
             else:
                 self.assertEqual(len(bar_lines), 1 + num_presses * 2)
 
-        lib.write_out_chart(chart.notes, bpm, press_duration)
+        lib.get_chart_lines(chart.notes, bpm, press_duration)
 
 
 class TestBarLogic(unittest.TestCase):
@@ -249,7 +249,7 @@ class TestMultiBarLogic(unittest.TestCase):
             "0010\n0000\n0100\n0000\n,"
             "\n1000\n0000\n0010\n1000\n0100\n0000\n1000\n0000\n"
         )
-        lines = lib.write_out_chart(string, self.bpm, self.press_duration)
+        lines = lib.get_chart_lines(string, self.bpm, self.press_duration)
         timeline = lib.produce_press_absolute_timeline(lines)
         self.assertEqual(len(lines), 4 + 10)
         self.assertEqual(len(timeline), 2 + 5)
