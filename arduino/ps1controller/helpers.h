@@ -9,7 +9,6 @@ int MacroPin = 10;             // Activation button connected to digital pin 10
 int PressDuration = 50; // ms
 int BetweenPressDelay = 300; // ms
 
-
 void press_w_delay(int button_pin, int press_duration, int post_press_delay) {
       digitalWrite(button_pin, LOW);    // Activates button
       delay(press_duration);                 // hold button for duration
