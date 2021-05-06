@@ -14,11 +14,11 @@ def main(args):
 
     bpm = lib.get_bpm(sm)
     hard_single = sm.charts[3]
-    lines = lib.get_chart_lines(hard_single.notes, bpm, args.press_duration)
+    lines = lib.get_chart_lines(hard_single.notes, bpm + args.bpm_offset, args.press_duration)
 
     if args.output_fname is not None:
         with open(args.output_fname, "w") as f:
-            lines = lib.get_output_lines(sm, 3, args.press_duration)
+            lines = lib.get_output_lines(sm, 3, args.press_duration, args.bpm_offset)
             for line in lines:
                 f.write(str(line) + '\n')
     else:
@@ -33,6 +33,12 @@ if __name__ == "__main__":
         "--press-duration",
         type=int,
         default=lib.PRESS_DURATION,
+        help="Duration for press in ms",
+    )
+    ap.add_argument(
+        "--bpm-offset",
+        type=int,
+        default=0,
         help="Duration for press in ms",
     )
     args = ap.parse_args()

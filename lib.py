@@ -61,7 +61,7 @@ class Press:
         self._button_dirs_str = ", ".join([d.name.title() for d in self.keys])
         self._string = (
             f"{self._function_name}({self._button_dirs_str}, "
-            f"{self._duration});"
+            "press_duration);"
         )
 
     def __str__(self):
@@ -247,12 +247,13 @@ def remove_initial_delays(chart_lines):
     return chart_lines[first_press_idx:]
 
 
-def get_output_lines(sm, chart_index, press_duration):
+def get_output_lines(sm, chart_index, press_duration, bpm_offset):
     header_lines = write_header(sm, press_duration)
     notes = sm.charts[chart_index].notes
+    bpm = get_bpm(sm) + bpm_offset
     note_lines = [
         TAB + str(line) for line in
-        remove_initial_delays(get_chart_lines(notes, get_bpm(sm), press_duration))
+        remove_initial_delays(get_chart_lines(notes, bpm, press_duration))
     ]
     footer_lines = write_footer()
     return header_lines + note_lines + footer_lines
