@@ -37,7 +37,7 @@ if __name__ == "__main__":
     )
     ap.add_argument(
         "--bpm-offset",
-        type=int,
+        type=float,
         default=0,
         help="Duration for press in ms",
     )
