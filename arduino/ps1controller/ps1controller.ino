@@ -9,11 +9,6 @@
 #include "helpers.h"  // Shared header containing functions used in per-song files
 #include "hysteria.h"
 
-int A = 0;                 // A button connected to digital pin 0
-int B = 1;                 // B button connected to digital pin 1
-int Select = 2;            // Select button connected to digital pin 2
-int Start = 3;             // Start button connected to digital pin 3
-
 void setup()
 {
   pinMode(Left, OUTPUT);
@@ -23,22 +18,6 @@ void setup()
   
   pinMode(MacroPin, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
-
-  int kelly = 100 + bpm;
-}
-
-
-void send_button_presses(){
-    /*for (int i = 0; i < 10; ++i) {
-      press_w_delay(Right, PressDuration, BetweenPressDelay);
-      
-      press_w_delay(Up, PressDuration, BetweenPressDelay);
-
-      press_w_delay(Down, PressDuration, BetweenPressDelay);
-      
-      press_w_delay(Left, PressDuration, BetweenPressDelay);
-  }*/
-  play_song();
 }
 
 void loop()
@@ -53,9 +32,8 @@ void loop()
   digitalWrite(Down, HIGH);    // De-Activates Down button 
   digitalWrite(MacroPin, HIGH);      // Sets reference HIGH
 
-
   int buttonValue = digitalRead(MacroPin);
   if (buttonValue == LOW) {
-    send_button_presses();
+    play_song();
   }
 }
