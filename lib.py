@@ -203,6 +203,16 @@ def write_out_bar_code(bar, press_duration, bpm, last_delay=0.0):
     return bar_lines, 0.0
 
 
+def produce_press_absolute_timeline(bar_lines):
+    time = 0
+    press_times = []
+    for line in bar_lines:
+        if isinstance(line, lib.Press):
+            press_times.append(time)
+        time += line.duration
+    return press_times
+
+
 def produce_bar(bar):
     num_rows = len(bar.split())
     return Bar(notes=bar, num_rows=num_rows)
