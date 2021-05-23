@@ -3,3 +3,8 @@ __pycache__/*
 testing/__pycache__/*
 *.h
 smfiles/*
+lib/
+bin/
+lib64
+share/
+pyvenv.cfg
