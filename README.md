@@ -21,7 +21,8 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-        <li><a href="#background">Background</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#background">Background</a></li>
     <li><a href="#reference">Reference</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -89,6 +90,12 @@ To get a local copy up and running, follow these steps.
 4. Hook it all up, boot up the playstation and konamix,
 5. press the MacroPin button on the first note of your chart!
 
+## Testing
+
+To run the tests under testing, I use this command (with the virtual env already activated, etc) from the repo root:
+```sh
+python -m testing
+```
 
 ## Background
 [TODO] Add some explanation of what it is and does here. And why.
