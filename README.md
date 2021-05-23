@@ -16,3 +16,11 @@ My little project essentially translating .sm files into commands to play DDR tr
 
 optionally: set up correct bpm offset, fix chart selection, etc.
 There are lots of bugs etc. Good luck.
+
+
+## Reference Images
+
+After trying to debug what I was doing wrong on May ~22 2021, I made this circuit diagram online: https://crcit.net/c/b473b849964645f9a8e5d0a5cde722ab
+
+[TODO] Add direct image of circuit diagram from link
+[TODO] I'll add some images of the circuit when it's all put-together and working, for reference.
