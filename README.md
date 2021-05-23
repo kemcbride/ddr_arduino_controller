@@ -22,5 +22,5 @@ There are lots of bugs etc. Good luck.
 
 After trying to debug what I was doing wrong on May ~22 2021, I made this circuit diagram online: https://crcit.net/c/b473b849964645f9a8e5d0a5cde722ab
 
-![Circuit.png from Imgur](https://i.imgur.com/XyPsRPC.png)
-[TODO] I'll add some images of the circuit when it's all put-together and working, for reference.
+![Circuit.png Diagram from Imgur](https://i.imgur.com/XyPsRPC.png)
+![A picture of my circuit from Imgur](https://i.imgur.com/y0jQQtO.jpg)
