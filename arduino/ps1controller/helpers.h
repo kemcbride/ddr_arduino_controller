@@ -1,11 +1,11 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
-int Left = 51;              // Left button connected to digital pin 4
-int Right = 52;             // Right button connected to digital pin 5
-int Up = 50;                // Up button connected to digital pin 6
-int Down = 53;              // Down button connected to digital pin 7
-int MacroPin = 10;             // Activation button connected to digital pin 10
+int Left = 51;
+int Right = 50;
+int Up = 52;
+int Down = 53;
+int MacroPin = 10;             // Activation button
 int PressDuration = 50; // ms
 
 void press_w_delay(int button_pin, int press_duration, int post_press_delay) {

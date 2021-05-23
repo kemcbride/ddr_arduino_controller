@@ -7,7 +7,7 @@
 // Probably, it will need to be recompiled for each song, if I end up doing multiple songs.
 
 #include "helpers.h"  // Shared header containing functions used in per-song files
-#include "hysteria.h"
+#include "letthemmove.h"
 
 void setup()
 {
@@ -32,8 +32,8 @@ void loop()
   digitalWrite(Down, HIGH);
   digitalWrite(MacroPin, HIGH);      // Sets reference HIGH
 
-  int buttonValue = digitalRead(MacroPin);
-  if (buttonValue == LOW) {
+ int buttonValue = digitalRead(MacroPin);
+ if (buttonValue == LOW) {
     play_song();
   }
 }

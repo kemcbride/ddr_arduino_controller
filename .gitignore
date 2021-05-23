@@ -1,7 +1,6 @@
 venv
 __pycache__/*
 testing/__pycache__/*
-*.h
 smfiles/*
 lib/
 bin/
